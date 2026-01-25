@@ -14,7 +14,7 @@ IF NOT EXISTS
       AND update_referential_action_desc = 'NO_ACTION'
 )
 BEGIN
-    THROW 51000, 'Expected trusted, enabled FK_SalesOrder_Customer with NO ACTION to dbo.Customer.', 1;
+    ;THROW 51000, 'Expected trusted, enabled FK_SalesOrder_Customer with NO ACTION to dbo.Customer.', 1;
 END
 
 IF NOT EXISTS
@@ -30,7 +30,7 @@ IF NOT EXISTS
       AND update_referential_action_desc = 'NO_ACTION'
 )
 BEGIN
-    THROW 51000, 'Expected trusted, enabled FK_SalesOrderLine_SalesOrder with NO ACTION to dbo.SalesOrder.', 1;
+    ;THROW 51000, 'Expected trusted, enabled FK_SalesOrderLine_SalesOrder with NO ACTION to dbo.SalesOrder.', 1;
 END
 
 IF NOT EXISTS
@@ -48,7 +48,7 @@ IF NOT EXISTS
       AND rc.name = 'CustomerId'
 )
 BEGIN
-    THROW 51000, 'Expected FK_SalesOrder_Customer to reference dbo.Customer(CustomerId).', 1;
+    ;THROW 51000, 'Expected FK_SalesOrder_Customer to reference dbo.Customer(CustomerId).', 1;
 END
 
 IF NOT EXISTS
@@ -66,7 +66,7 @@ IF NOT EXISTS
       AND rc.name = 'SalesOrderId'
 )
 BEGIN
-    THROW 51000, 'Expected FK_SalesOrderLine_SalesOrder to reference dbo.SalesOrder(SalesOrderId).', 1;
+    ;THROW 51000, 'Expected FK_SalesOrderLine_SalesOrder to reference dbo.SalesOrder(SalesOrderId).', 1;
 END
 
 PRINT 'Verification: foreign keys OK';

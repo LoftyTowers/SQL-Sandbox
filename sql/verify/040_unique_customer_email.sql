@@ -1,5 +1,8 @@
 SET NOCOUNT ON;
 USE [SandboxDb];
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
 
 IF NOT EXISTS
 (
@@ -9,10 +12,11 @@ IF NOT EXISTS
       AND i.object_id = OBJECT_ID(N'dbo.Customer')
       AND i.is_unique = 1
       AND i.has_filter = 1
-      AND i.filter_definition LIKE '%Email IS NOT NULL%'
+      AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(i.filter_definition, CHAR(13), ''), CHAR(10), ''), ' ', ''), '[', ''), ']', '')
+          LIKE '%EmailISNOTNULL%'
 )
 BEGIN
-    THROW 51000, 'Expected filtered unique index UX_Customer_Email on dbo.Customer(Email).', 1;
+    ;THROW 51000, 'Expected filtered unique index UX_Customer_Email on dbo.Customer(Email).', 1;
 END
 
 IF NOT EXISTS
@@ -31,7 +35,7 @@ IF NOT EXISTS
       AND c.name = 'Email'
 )
 BEGIN
-    THROW 51000, 'Expected UX_Customer_Email to use dbo.Customer.Email as key.', 1;
+    ;THROW 51000, 'Expected UX_Customer_Email to use dbo.Customer.Email as key.', 1;
 END
 
 BEGIN TRANSACTION;
@@ -43,7 +47,7 @@ BEGIN TRY
     INSERT INTO dbo.Customer (CustomerName, Email)
     VALUES (N'Unique Customer B', N'unique@example.test');
 
-    THROW 51000, 'Expected duplicate Email insert to fail.', 1;
+    ;THROW 51000, 'Expected duplicate Email insert to fail.', 1;
 END TRY
 BEGIN CATCH
     IF ERROR_NUMBER() NOT IN (2601, 2627, 51000)
@@ -52,7 +56,7 @@ BEGIN CATCH
         BEGIN
             ROLLBACK TRANSACTION;
         END
-        THROW;
+        ;THROW;
     END
 END CATCH
 
@@ -68,7 +72,7 @@ BEGIN CATCH
     BEGIN
         ROLLBACK TRANSACTION;
     END
-    THROW 51000, 'Expected NULL Email inserts to succeed under filtered unique index.', 1;
+    ;THROW 51000, 'Expected NULL Email inserts to succeed under filtered unique index.', 1;
 END CATCH
 
 ROLLBACK TRANSACTION;

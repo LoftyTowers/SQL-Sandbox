@@ -28,7 +28,7 @@ IF NOT EXISTS
       AND i.type_desc = 'NONCLUSTERED'
 )
 BEGIN
-    THROW 51000, 'Expected index IX_SalesOrder_Customer_OrderDate on dbo.SalesOrder.', 1;
+    ;THROW 51000, 'Expected index IX_SalesOrder_Customer_OrderDate on dbo.SalesOrder.', 1;
 END
 
 IF NOT EXISTS
@@ -44,7 +44,7 @@ IF NOT EXISTS
       AND c.name = 'CustomerId'
 )
 BEGIN
-    THROW 51000, 'Expected CustomerId as first key in IX_SalesOrder_Customer_OrderDate.', 1;
+    ;THROW 51000, 'Expected CustomerId as first key in IX_SalesOrder_Customer_OrderDate.', 1;
 END
 
 IF NOT EXISTS
@@ -60,7 +60,7 @@ IF NOT EXISTS
       AND c.name = 'OrderDate'
 )
 BEGIN
-    THROW 51000, 'Expected OrderDate as second key in IX_SalesOrder_Customer_OrderDate.', 1;
+    ;THROW 51000, 'Expected OrderDate as second key in IX_SalesOrder_Customer_OrderDate.', 1;
 END
 
 IF NOT EXISTS
@@ -76,7 +76,7 @@ IF NOT EXISTS
       AND c.name = 'OrderNumber'
 )
 BEGIN
-    THROW 51000, 'Expected OrderNumber as INCLUDE in IX_SalesOrder_Customer_OrderDate.', 1;
+    ;THROW 51000, 'Expected OrderNumber as INCLUDE in IX_SalesOrder_Customer_OrderDate.', 1;
 END
 
 IF NOT EXISTS
@@ -88,7 +88,7 @@ IF NOT EXISTS
       AND i.type_desc = 'NONCLUSTERED'
 )
 BEGIN
-    THROW 51000, 'Expected index IX_SalesOrderLine_Order_LineNumber on dbo.SalesOrderLine.', 1;
+    ;THROW 51000, 'Expected index IX_SalesOrderLine_Order_LineNumber on dbo.SalesOrderLine.', 1;
 END
 
 IF NOT EXISTS
@@ -104,7 +104,7 @@ IF NOT EXISTS
       AND c.name = 'SalesOrderId'
 )
 BEGIN
-    THROW 51000, 'Expected SalesOrderId as first key in IX_SalesOrderLine_Order_LineNumber.', 1;
+    ;THROW 51000, 'Expected SalesOrderId as first key in IX_SalesOrderLine_Order_LineNumber.', 1;
 END
 
 IF NOT EXISTS
@@ -120,7 +120,7 @@ IF NOT EXISTS
       AND c.name = 'LineNumber'
 )
 BEGIN
-    THROW 51000, 'Expected LineNumber as second key in IX_SalesOrderLine_Order_LineNumber.', 1;
+    ;THROW 51000, 'Expected LineNumber as second key in IX_SalesOrderLine_Order_LineNumber.', 1;
 END
 
 IF NOT EXISTS
@@ -136,7 +136,7 @@ IF NOT EXISTS
       AND c.name = 'ItemName'
 )
 BEGIN
-    THROW 51000, 'Expected ItemName as INCLUDE in IX_SalesOrderLine_Order_LineNumber.', 1;
+    ;THROW 51000, 'Expected ItemName as INCLUDE in IX_SalesOrderLine_Order_LineNumber.', 1;
 END
 
 IF NOT EXISTS
@@ -152,7 +152,7 @@ IF NOT EXISTS
       AND c.name = 'Quantity'
 )
 BEGIN
-    THROW 51000, 'Expected Quantity as INCLUDE in IX_SalesOrderLine_Order_LineNumber.', 1;
+    ;THROW 51000, 'Expected Quantity as INCLUDE in IX_SalesOrderLine_Order_LineNumber.', 1;
 END
 
 IF NOT EXISTS
@@ -168,7 +168,7 @@ IF NOT EXISTS
       AND c.name = 'UnitPrice'
 )
 BEGIN
-    THROW 51000, 'Expected UnitPrice as INCLUDE in IX_SalesOrderLine_Order_LineNumber.', 1;
+    ;THROW 51000, 'Expected UnitPrice as INCLUDE in IX_SalesOrderLine_Order_LineNumber.', 1;
 END
 
 PRINT 'Verification: query indexes OK';

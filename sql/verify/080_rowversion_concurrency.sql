@@ -1,9 +1,12 @@
 SET NOCOUNT ON;
 USE [SandboxDb];
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
 
 IF COL_LENGTH(N'dbo.SalesOrder', N'RowVersion') IS NULL
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrder.RowVersion to exist.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrder.RowVersion to exist.', 1;
 END
 
 IF NOT EXISTS
@@ -15,7 +18,7 @@ IF NOT EXISTS
       AND system_type_id = 189
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrder.RowVersion to be rowversion.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrder.RowVersion to be rowversion.', 1;
 END
 
 IF NOT EXISTS
@@ -26,7 +29,7 @@ IF NOT EXISTS
       AND schema_id = SCHEMA_ID(N'dbo')
 )
 BEGIN
-    THROW 51000, 'Expected stored procedure dbo.usp_UpdateSalesOrderNumber to exist.', 1;
+    ;THROW 51000, 'Expected stored procedure dbo.usp_UpdateSalesOrderNumber to exist.', 1;
 END
 
 BEGIN TRANSACTION;
@@ -62,7 +65,7 @@ BEGIN TRY
 
     IF @NewRowVersion = @RowVersion
     BEGIN
-        THROW 51000, 'Expected rowversion to change after update.', 1;
+        ;THROW 51000, 'Expected rowversion to change after update.', 1;
     END
 
     BEGIN TRY
@@ -80,7 +83,7 @@ BEGIN TRY
             BEGIN
                 ROLLBACK TRANSACTION;
             END
-            THROW;
+            ;THROW;
         END
     END CATCH
 
@@ -91,7 +94,7 @@ BEGIN CATCH
     BEGIN
         ROLLBACK TRANSACTION;
     END
-    THROW;
+    ;THROW;
 END CATCH
 
 PRINT 'Verification: rowversion concurrency OK';

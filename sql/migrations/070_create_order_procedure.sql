@@ -1,6 +1,6 @@
 SET NOCOUNT ON;
 USE [SandboxDb];
-
+GO
 CREATE OR ALTER PROCEDURE dbo.usp_CreateOrder
     @CustomerId INT,
     @OrderNumber NVARCHAR(30),
@@ -56,6 +56,7 @@ BEGIN
                 ROLLBACK TRANSACTION usp_CreateOrder_Savepoint;
             END
         END
-        THROW;
+        ;THROW;
+
     END CATCH
 END
