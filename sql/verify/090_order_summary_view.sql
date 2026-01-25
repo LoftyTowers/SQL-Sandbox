@@ -1,9 +1,12 @@
 SET NOCOUNT ON;
 USE [SandboxDb];
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
 
 IF OBJECT_ID(N'dbo.v_OrderSummary', N'V') IS NULL
 BEGIN
-    THROW 51000, 'Expected view dbo.v_OrderSummary to exist.', 1;
+    ;THROW 51000, 'Expected view dbo.v_OrderSummary to exist.', 1;
 END
 
 IF EXISTS
@@ -14,7 +17,7 @@ IF EXISTS
       AND is_ms_shipped = 0
 )
 BEGIN
-    THROW 51000, 'Expected no user triggers to exist.', 1;
+    ;THROW 51000, 'Expected no user triggers to exist.', 1;
 END
 
 BEGIN TRANSACTION;
@@ -49,7 +52,7 @@ BEGIN TRY
           AND TotalAmount = 13.50
     )
     BEGIN
-        THROW 51000, 'Expected v_OrderSummary to return correct totals.', 1;
+        ;THROW 51000, 'Expected v_OrderSummary to return correct totals.', 1;
     END
 
     ROLLBACK TRANSACTION;
@@ -59,7 +62,7 @@ BEGIN CATCH
     BEGIN
         ROLLBACK TRANSACTION;
     END
-    THROW;
+    ;THROW;
 END CATCH
 
 PRINT 'Verification: order summary view OK';

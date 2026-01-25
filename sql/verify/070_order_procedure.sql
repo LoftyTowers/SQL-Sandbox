@@ -1,5 +1,8 @@
 SET NOCOUNT ON;
 USE [SandboxDb];
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
 
 IF NOT EXISTS
 (
@@ -9,13 +12,14 @@ IF NOT EXISTS
       AND schema_id = SCHEMA_ID(N'dbo')
 )
 BEGIN
-    THROW 51000, 'Expected stored procedure dbo.usp_CreateOrder to exist.', 1;
+    ;THROW 51000, 'Expected stored procedure dbo.usp_CreateOrder to exist.', 1;
 END
 
 BEGIN TRANSACTION;
 
 DECLARE @CustomerId INT;
 DECLARE @SalesOrderId INT;
+DECLARE @OrderDate datetime2(0) = DATETIME2FROMPARTS(2026, 1, 5, 0, 0, 0, 0, 0);
 
 BEGIN TRY
     INSERT INTO dbo.Customer (CustomerName, Email)
@@ -26,7 +30,7 @@ BEGIN TRY
     EXEC dbo.usp_CreateOrder
         @CustomerId = @CustomerId,
         @OrderNumber = N'T07-OK',
-        @OrderDate = CAST('2026-01-05T00:00:00' AS DATETIME2(0)),
+        @OrderDate = @OrderDate,
         @LineNumber = 1,
         @ItemName = N'Procedure Item',
         @Quantity = 1,
@@ -34,7 +38,7 @@ BEGIN TRY
 
     IF @@TRANCOUNT <> 1 OR XACT_STATE() <> 1
     BEGIN
-        THROW 51000, 'Expected outer transaction to remain active after successful procedure call.', 1;
+        ;THROW 51000, 'Expected outer transaction to remain active after successful procedure call.', 1;
     END
 
     SELECT @SalesOrderId = SalesOrderId
@@ -44,7 +48,7 @@ BEGIN TRY
 
     IF @SalesOrderId IS NULL
     BEGIN
-        THROW 51000, 'Expected SalesOrder to be created by usp_CreateOrder.', 1;
+        ;THROW 51000, 'Expected SalesOrder to be created by usp_CreateOrder.', 1;
     END
 
     IF NOT EXISTS
@@ -55,14 +59,14 @@ BEGIN TRY
           AND LineNumber = 1
     )
     BEGIN
-        THROW 51000, 'Expected SalesOrderLine to be created by usp_CreateOrder.', 1;
+        ;THROW 51000, 'Expected SalesOrderLine to be created by usp_CreateOrder.', 1;
     END
 
     BEGIN TRY
         EXEC dbo.usp_CreateOrder
             @CustomerId = @CustomerId,
             @OrderNumber = N'T07-FAIL',
-            @OrderDate = CAST('2026-01-06T00:00:00' AS DATETIME2(0)),
+            @OrderDate = @OrderDate,
             @LineNumber = 1,
             @ItemName = N'Invalid Item',
             @Quantity = 0,
@@ -77,13 +81,13 @@ BEGIN TRY
             BEGIN
                 ROLLBACK TRANSACTION;
             END
-            THROW;
+            ;THROW;
         END
     END CATCH
 
     IF @@TRANCOUNT <> 1 OR XACT_STATE() <> 1
     BEGIN
-        THROW 51000, 'Expected outer transaction to remain active after failed procedure call.', 1;
+        ;THROW 51000, 'Expected outer transaction to remain active after failed procedure call.', 1;
     END
 
     IF EXISTS
@@ -94,7 +98,7 @@ BEGIN TRY
           AND CustomerId = @CustomerId
     )
     BEGIN
-        THROW 51000, 'Expected no SalesOrder row for failed procedure call.', 1;
+        ;THROW 51000, 'Expected no SalesOrder row for failed procedure call.', 1;
     END
 
     IF EXISTS
@@ -107,7 +111,7 @@ BEGIN TRY
           AND so.CustomerId = @CustomerId
     )
     BEGIN
-        THROW 51000, 'Expected no SalesOrderLine rows for failed procedure call.', 1;
+        ;THROW 51000, 'Expected no SalesOrderLine rows for failed procedure call.', 1;
     END
 
     ROLLBACK TRANSACTION;
@@ -117,7 +121,7 @@ BEGIN CATCH
     BEGIN
         ROLLBACK TRANSACTION;
     END
-    THROW;
+    ;THROW;
 END CATCH
 
 PRINT 'Verification: order procedure OK';

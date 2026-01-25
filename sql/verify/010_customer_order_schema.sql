@@ -3,17 +3,17 @@ USE [SandboxDb];
 
 IF OBJECT_ID(N'dbo.Customer', N'U') IS NULL
 BEGIN
-    THROW 51000, 'Expected table dbo.Customer to exist.', 1;
+    ;THROW 51000, 'Expected table dbo.Customer to exist.', 1;
 END
 
 IF OBJECT_ID(N'dbo.SalesOrder', N'U') IS NULL
 BEGIN
-    THROW 51000, 'Expected table dbo.SalesOrder to exist.', 1;
+    ;THROW 51000, 'Expected table dbo.SalesOrder to exist.', 1;
 END
 
 IF OBJECT_ID(N'dbo.SalesOrderLine', N'U') IS NULL
 BEGIN
-    THROW 51000, 'Expected table dbo.SalesOrderLine to exist.', 1;
+    ;THROW 51000, 'Expected table dbo.SalesOrderLine to exist.', 1;
 END
 
 IF NOT EXISTS
@@ -27,7 +27,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.Customer.CustomerId INT NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.Customer.CustomerId INT NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -42,7 +42,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.Customer.CustomerName NVARCHAR(200) NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.Customer.CustomerName NVARCHAR(200) NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -57,7 +57,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'YES'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.Customer.Email NVARCHAR(320) NULL.', 1;
+    ;THROW 51000, 'Expected dbo.Customer.Email NVARCHAR(320) NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -72,7 +72,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.Customer.CreatedAt DATETIME2(0) NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.Customer.CreatedAt DATETIME2(0) NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -86,7 +86,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrder.SalesOrderId INT NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrder.SalesOrderId INT NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -100,7 +100,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrder.CustomerId INT NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrder.CustomerId INT NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -115,7 +115,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrder.OrderNumber NVARCHAR(30) NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrder.OrderNumber NVARCHAR(30) NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -130,7 +130,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrder.OrderDate DATETIME2(0) NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrder.OrderDate DATETIME2(0) NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -144,7 +144,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrderLine.SalesOrderLineId INT NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrderLine.SalesOrderLineId INT NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -158,7 +158,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrderLine.SalesOrderId INT NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrderLine.SalesOrderId INT NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -172,7 +172,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrderLine.LineNumber SMALLINT NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrderLine.LineNumber SMALLINT NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -187,7 +187,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrderLine.ItemName NVARCHAR(200) NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrderLine.ItemName NVARCHAR(200) NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -201,7 +201,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrderLine.Quantity INT NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrderLine.Quantity INT NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -217,7 +217,7 @@ IF NOT EXISTS
       AND IS_NULLABLE = 'NO'
 )
 BEGIN
-    THROW 51000, 'Expected dbo.SalesOrderLine.UnitPrice DECIMAL(12,2) NOT NULL.', 1;
+    ;THROW 51000, 'Expected dbo.SalesOrderLine.UnitPrice DECIMAL(12,2) NOT NULL.', 1;
 END
 
 IF NOT EXISTS
@@ -236,7 +236,7 @@ IF NOT EXISTS
       AND ic.key_ordinal = 1
 )
 BEGIN
-    THROW 51000, 'Expected primary key on dbo.Customer(CustomerId).', 1;
+    ;THROW 51000, 'Expected primary key on dbo.Customer(CustomerId).', 1;
 END
 
 IF NOT EXISTS
@@ -255,7 +255,7 @@ IF NOT EXISTS
       AND ic.key_ordinal = 1
 )
 BEGIN
-    THROW 51000, 'Expected primary key on dbo.SalesOrder(SalesOrderId).', 1;
+    ;THROW 51000, 'Expected primary key on dbo.SalesOrder(SalesOrderId).', 1;
 END
 
 IF NOT EXISTS
@@ -274,7 +274,7 @@ IF NOT EXISTS
       AND ic.key_ordinal = 1
 )
 BEGIN
-    THROW 51000, 'Expected primary key on dbo.SalesOrderLine(SalesOrderLineId).', 1;
+    ;THROW 51000, 'Expected primary key on dbo.SalesOrderLine(SalesOrderLineId).', 1;
 END
 
 PRINT 'Verification: Customer/Order schema OK';

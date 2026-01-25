@@ -1,5 +1,8 @@
 SET NOCOUNT ON;
 USE [SandboxDb];
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
 
 BEGIN TRANSACTION;
 
@@ -45,7 +48,7 @@ BEGIN TRY
 
     IF @JoinCount <> 4
     BEGIN
-        THROW 51000, 'Expected join to return 4 rows for the test customer.', 1;
+        ;THROW 51000, 'Expected join to return 4 rows for the test customer.', 1;
     END
 
     IF EXISTS
@@ -61,10 +64,10 @@ BEGIN TRY
           )
     )
     BEGIN
-        THROW 51000, 'Expected all test orders to have at least one line.', 1;
+        ;THROW 51000, 'Expected all test orders to have at least one line.', 1;
     END
 
-    WITH OrderedOrders AS
+    ;WITH OrderedOrders AS
     (
         SELECT
             so.SalesOrderId,
@@ -80,7 +83,7 @@ BEGIN TRY
 
     IF @FirstId <> @Order1Id OR @SecondId <> @Order2Id OR @ThirdId <> @Order3Id
     BEGIN
-        THROW 51000, 'Expected deterministic ordering by OrderDate then SalesOrderId.', 1;
+        ;THROW 51000, 'Expected deterministic ordering by OrderDate then SalesOrderId.', 1;
     END
 
     DECLARE @Page TABLE
@@ -99,7 +102,7 @@ BEGIN TRY
     IF EXISTS (SELECT 1 FROM @Page WHERE RowNum = 1 AND SalesOrderId <> @Order1Id)
        OR EXISTS (SELECT 1 FROM @Page WHERE RowNum = 2 AND SalesOrderId <> @Order2Id)
     BEGIN
-        THROW 51000, 'Expected pagination to return the first two orders deterministically.', 1;
+        ;THROW 51000, 'Expected pagination to return the first two orders deterministically.', 1;
     END
 
     ROLLBACK TRANSACTION;
@@ -109,7 +112,7 @@ BEGIN CATCH
     BEGIN
         ROLLBACK TRANSACTION;
     END
-    THROW;
+    ;THROW;
 END CATCH
 
 PRINT 'Verification: query correctness OK';

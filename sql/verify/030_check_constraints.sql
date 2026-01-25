@@ -1,6 +1,8 @@
 SET NOCOUNT ON;
 USE [SandboxDb];
-
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
 IF NOT EXISTS
 (
     SELECT 1
@@ -11,7 +13,7 @@ IF NOT EXISTS
       AND is_not_trusted = 0
 )
 BEGIN
-    THROW 51000, 'Expected trusted, enabled CK_SalesOrderLine_Quantity_Positive.', 1;
+    ;THROW 51000, 'Expected trusted, enabled CK_SalesOrderLine_Quantity_Positive.', 1;
 END
 
 IF NOT EXISTS
@@ -24,7 +26,7 @@ IF NOT EXISTS
       AND is_not_trusted = 0
 )
 BEGIN
-    THROW 51000, 'Expected trusted, enabled CK_SalesOrderLine_UnitPrice_NonNegative.', 1;
+    ;THROW 51000, 'Expected trusted, enabled CK_SalesOrderLine_UnitPrice_NonNegative.', 1;
 END
 
 IF NOT EXISTS
@@ -37,7 +39,7 @@ IF NOT EXISTS
       AND is_not_trusted = 0
 )
 BEGIN
-    THROW 51000, 'Expected trusted, enabled CK_SalesOrder_OrderNumber_NotBlank.', 1;
+    ;THROW 51000, 'Expected trusted, enabled CK_SalesOrder_OrderNumber_NotBlank.', 1;
 END
 
 BEGIN TRANSACTION;
@@ -64,13 +66,13 @@ BEGIN CATCH
     BEGIN
         ROLLBACK TRANSACTION;
     END
-    THROW 51000, 'Expected valid inserts to succeed under CHECK constraints.', 1;
+    ;THROW 51000, 'Expected valid inserts to succeed under CHECK constraints.', 1;
 END CATCH
 
 BEGIN TRY
     INSERT INTO dbo.SalesOrderLine (SalesOrderId, LineNumber, ItemName, Quantity, UnitPrice)
     VALUES (@SalesOrderId, 2, N'Invalid Quantity', 0, 1.00);
-    THROW 51000, 'Expected CHECK constraint to reject Quantity <= 0.', 1;
+    ;THROW 51000, 'Expected CHECK constraint to reject Quantity <= 0.', 1;
 END TRY
 BEGIN CATCH
     IF ERROR_NUMBER() NOT IN (547, 51000)
@@ -79,14 +81,14 @@ BEGIN CATCH
         BEGIN
             ROLLBACK TRANSACTION;
         END
-        THROW;
+        ;THROW;
     END
 END CATCH
 
 BEGIN TRY
     INSERT INTO dbo.SalesOrderLine (SalesOrderId, LineNumber, ItemName, Quantity, UnitPrice)
     VALUES (@SalesOrderId, 3, N'Invalid Price', 1, -1.00);
-    THROW 51000, 'Expected CHECK constraint to reject UnitPrice < 0.', 1;
+    ;THROW 51000, 'Expected CHECK constraint to reject UnitPrice < 0.', 1;
 END TRY
 BEGIN CATCH
     IF ERROR_NUMBER() NOT IN (547, 51000)
@@ -95,14 +97,14 @@ BEGIN CATCH
         BEGIN
             ROLLBACK TRANSACTION;
         END
-        THROW;
+        ;THROW;
     END
 END CATCH
 
 BEGIN TRY
     INSERT INTO dbo.SalesOrder (CustomerId, OrderNumber, OrderDate)
     VALUES (@CustomerId, N'   ', SYSUTCDATETIME());
-    THROW 51000, 'Expected CHECK constraint to reject blank OrderNumber.', 1;
+    ;THROW 51000, 'Expected CHECK constraint to reject blank OrderNumber.', 1;
 END TRY
 BEGIN CATCH
     IF ERROR_NUMBER() NOT IN (547, 51000)
@@ -111,7 +113,7 @@ BEGIN CATCH
         BEGIN
             ROLLBACK TRANSACTION;
         END
-        THROW;
+        ;THROW;
     END
 END CATCH
 

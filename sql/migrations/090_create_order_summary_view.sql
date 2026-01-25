@@ -6,6 +6,8 @@ BEGIN
     EXEC ('CREATE VIEW dbo.v_OrderSummary AS SELECT 1 AS Placeholder;');
 END
 
+GO
+
 ALTER VIEW dbo.v_OrderSummary
 AS
     SELECT

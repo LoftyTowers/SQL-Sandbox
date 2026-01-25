@@ -1,5 +1,8 @@
 SET NOCOUNT ON;
 USE [SandboxDb];
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
 
 IF NOT EXISTS
 (
@@ -19,7 +22,7 @@ IF NOT EXISTS
       AND sc.information_type = 'Email Address'
 )
 BEGIN
-    THROW 51000, 'Expected classification on dbo.Customer.Email.', 1;
+    ;THROW 51000, 'Expected classification on dbo.Customer.Email.', 1;
 END
 
 IF NOT EXISTS
@@ -40,7 +43,7 @@ IF NOT EXISTS
       AND sc.information_type = 'Name'
 )
 BEGIN
-    THROW 51000, 'Expected classification on dbo.Customer.CustomerName.', 1;
+    ;THROW 51000, 'Expected classification on dbo.Customer.CustomerName.', 1;
 END
 
 IF NOT EXISTS
@@ -51,7 +54,7 @@ IF NOT EXISTS
       AND type = 'R'
 )
 BEGIN
-    THROW 51000, 'Expected database role app_reader to exist.', 1;
+    ;THROW 51000, 'Expected database role app_reader to exist.', 1;
 END
 
 IF NOT EXISTS
@@ -62,7 +65,7 @@ IF NOT EXISTS
       AND type = 'S'
 )
 BEGIN
-    THROW 51000, 'Expected database user app_reader_user to exist.', 1;
+    ;THROW 51000, 'Expected database user app_reader_user to exist.', 1;
 END
 
 IF NOT EXISTS
@@ -77,12 +80,12 @@ IF NOT EXISTS
       AND m.name = N'app_reader_user'
 )
 BEGIN
-    THROW 51000, 'Expected app_reader_user to be a member of app_reader.', 1;
+    ;THROW 51000, 'Expected app_reader_user to be a member of app_reader.', 1;
 END
 
 IF OBJECT_ID(N'dbo.v_OrderSummary', N'V') IS NULL
 BEGIN
-    THROW 51000, 'Expected view dbo.v_OrderSummary to exist.', 1;
+    ;THROW 51000, 'Expected view dbo.v_OrderSummary to exist.', 1;
 END
 
 IF NOT EXISTS
@@ -97,7 +100,7 @@ IF NOT EXISTS
       AND p.state_desc = 'GRANT'
 )
 BEGIN
-    THROW 51000, 'Expected SELECT on dbo.v_OrderSummary granted to app_reader.', 1;
+    ;THROW 51000, 'Expected SELECT on dbo.v_OrderSummary granted to app_reader.', 1;
 END
 
 IF NOT EXISTS
@@ -112,7 +115,7 @@ IF NOT EXISTS
       AND p.state_desc = 'DENY'
 )
 BEGIN
-    THROW 51000, 'Expected SELECT on dbo.Customer denied to app_reader.', 1;
+    ;THROW 51000, 'Expected SELECT on dbo.Customer denied to app_reader.', 1;
 END
 
 EXECUTE AS USER = N'app_reader_user';
@@ -123,21 +126,21 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
     REVERT;
-    THROW 51000, 'Expected app_reader_user to SELECT from dbo.v_OrderSummary.', 1;
+    ;THROW 51000, 'Expected app_reader_user to SELECT from dbo.v_OrderSummary.', 1;
 END CATCH
 
 BEGIN TRY
     SELECT TOP (1) Email
     FROM dbo.Customer;
     REVERT;
-    THROW 51000, 'Expected app_reader_user to be denied SELECT on dbo.Customer.', 1;
+    ;THROW 51000, 'Expected app_reader_user to be denied SELECT on dbo.Customer.', 1;
 END TRY
 BEGIN CATCH
     DECLARE @Err INT = ERROR_NUMBER();
     REVERT;
     IF @Err NOT IN (229, 51000)
     BEGIN
-        THROW;
+        ;THROW;
     END
 END CATCH
 
